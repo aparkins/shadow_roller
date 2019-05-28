@@ -38,11 +38,22 @@ def pushTheLimit(n):
     glitch = False # cannot glitch an edge roll
     return (successes, glitch)
 
+def extendedTest(n, l=None):
+    if n <= 0:
+        return []
+
+    curTest = shadowRoll(n, l)[0]
+    nextTests = extendedTest(n-2, l)
+    return [curTest] + [ n + curTest for n in nextTests ]
+
 def multiShadowRolls(k, n, l=None):
     return [ shadowRoll(n, l) for i in range(k) ]
 
 def multiPushedRolls(k, n):
     return [ pushTheLimit(n) for i in range(k) ]
+
+def multiExtendedTest(k, n, l=None):
+    return [ extendedTest(n, l) for i in range(k) ]
 
 def genRolls(c, k, n, l=None):
     results = [ sorted(multiShadowRolls(k, n, l), key=rollKey) for i in range(c) ]
